@@ -47,6 +47,9 @@ builder.Services.AddCors(options =>
         });
 });
 
+// Add AutoMapper and register profiles
+builder.Services.AddAutoMapper(typeof(RealEstate.Application.Mapping.PropertyProfile).Assembly);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

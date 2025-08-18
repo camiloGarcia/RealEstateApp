@@ -6,6 +6,7 @@ using RealEstate.Domain.Entities;
 using RealEstate.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace RealEstate.Tests;
 
@@ -13,13 +14,15 @@ namespace RealEstate.Tests;
 public class PropertyServiceTests
 {
     private Mock<IPropertyRepository> _mockRepository;
+    private Mock<IMapper> _mockMapper;
     private PropertyService _propertyService;
 
     [SetUp]
     public void Setup()
     {
         _mockRepository = new Mock<IPropertyRepository>();
-        _propertyService = new PropertyService(_mockRepository.Object);
+        _mockMapper = new Mock<IMapper>();
+        _propertyService = new PropertyService(_mockRepository.Object, _mockMapper.Object);
     }
 
     [Test]

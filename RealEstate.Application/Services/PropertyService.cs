@@ -1,3 +1,4 @@
+using AutoMapper;
 using RealEstate.Application.DTOs;
 using RealEstate.Domain.Entities;
 using RealEstate.Application.Interfaces;
@@ -9,16 +10,18 @@ namespace RealEstate.Application.Services;
 public class PropertyService : IPropertyService
 {
     private readonly IPropertyRepository _propertyRepository;
+    private readonly IMapper _mapper;
 
-    public PropertyService(IPropertyRepository propertyRepository)
+    public PropertyService(IPropertyRepository propertyRepository, IMapper mapper)
     {
         _propertyRepository = propertyRepository;
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<PropertyDto>> GetAllPropertiesAsync()
     {
         var properties = await _propertyRepository.GetAllAsync();
-        return properties.Select(MapToDto);
+        return properties.Select(p => _mapper.Map<PropertyDto>(p));
     }
 
     public async Task<IEnumerable<PropertyDto>> GetFilteredPropertiesAsync(PropertyFilterDto filter)
@@ -33,13 +36,13 @@ public class PropertyService : IPropertyService
             PageSize = filter.PageSize
         };
         var properties = await _propertyRepository.GetFilteredAsync(domainFilter);
-        return properties.Select(MapToDto);
+        return properties.Select(p => _mapper.Map<PropertyDto>(p));
     }
 
     public async Task<PropertyDto?> GetPropertyByIdAsync(string id)
     {
         var property = await _propertyRepository.GetByIdAsync(id);
-        return property != null ? MapToDto(property) : null;
+        return property != null ? _mapper.Map<PropertyDto>(property) : null;
     }
 
     public async Task<PropertyDto> CreatePropertyAsync(CreatePropertyDto createDto)
@@ -60,7 +63,7 @@ public class PropertyService : IPropertyService
         };
 
         var createdProperty = await _propertyRepository.CreateAsync(property);
-        return MapToDto(createdProperty);
+        return _mapper.Map<PropertyDto>(createdProperty);
     }
 
     public async Task<PropertyDto?> UpdatePropertyAsync(string id, UpdatePropertyDto updateDto)
@@ -69,16 +72,16 @@ public class PropertyService : IPropertyService
         if (existingProperty == null)
             return null;
 
-    existingProperty.Name = updateDto.Name;
-    existingProperty.Address = updateDto.Address;
-    existingProperty.Price = updateDto.Price;
-    existingProperty.CodeInternal = updateDto.CodeInternal;
-    existingProperty.Year = updateDto.Year;
-    existingProperty.ImageUrl = updateDto.ImageUrl;
-    existingProperty.UpdatedAt = DateTime.UtcNow;
+        existingProperty.Name = updateDto.Name;
+        existingProperty.Address = updateDto.Address;
+        existingProperty.Price = updateDto.Price;
+        existingProperty.CodeInternal = updateDto.CodeInternal;
+        existingProperty.Year = updateDto.Year;
+        existingProperty.ImageUrl = updateDto.ImageUrl;
+        existingProperty.UpdatedAt = DateTime.UtcNow;
 
         var updatedProperty = await _propertyRepository.UpdateAsync(id, existingProperty);
-        return updatedProperty != null ? MapToDto(updatedProperty) : null;
+        return updatedProperty != null ? _mapper.Map<PropertyDto>(updatedProperty) : null;
     }
 
     public async Task<bool> DeletePropertyAsync(string id)
@@ -98,21 +101,5 @@ public class PropertyService : IPropertyService
             PageSize = filter.PageSize
         };
         return await _propertyRepository.GetCountAsync(domainFilter);
-    }
-
-    private static PropertyDto MapToDto(Property property)
-    {
-        return new PropertyDto
-        {
-            Id = property.Id,
-            IdProperty = property.IdProperty,
-            IdOwner = property.IdOwner,
-            Name = property.Name,
-            Address = property.Address,
-            Price = property.Price,
-            CodeInternal = property.CodeInternal,
-            Year = property.Year,
-            ImageUrl = property.ImageUrl
-        };
     }
 }
