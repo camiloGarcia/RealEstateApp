@@ -1,9 +1,12 @@
 export interface Property {
   id: string;
+  idProperty: string;
   idOwner: string;
   name: string;
   address: string;
   price: number;
+  codeInternal: string;
+  year: number;
   imageUrl: string;
 }
 
@@ -12,6 +15,8 @@ export interface CreatePropertyDto {
   name: string;
   address: string;
   price: number;
+  codeInternal: string;
+  year: number;
   imageUrl: string;
 }
 
@@ -19,6 +24,8 @@ export interface UpdatePropertyDto {
   name: string;
   address: string;
   price: number;
+  codeInternal: string;
+  year: number;
   imageUrl: string;
 }
 

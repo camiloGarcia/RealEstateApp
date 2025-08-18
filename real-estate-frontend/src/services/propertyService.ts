@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Property, CreatePropertyDto, UpdatePropertyDto, PropertyFilter } from '../types/Property';
 
+// Usamos URL absoluta apuntando al backend (CORS configurado para incluir este origen)
 const API_BASE_URL = 'http://localhost:5010/api';
 
 const propertyService = {

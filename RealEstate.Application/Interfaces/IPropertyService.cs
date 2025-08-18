@@ -1,7 +1,7 @@
-using RealEstate.Domain.DTOs;
+using RealEstate.Application.DTOs;
 using RealEstate.Domain.Entities;
 
-namespace RealEstate.Domain.Interfaces;
+namespace RealEstate.Application.Interfaces;
 
 public interface IPropertyService
 {

@@ -31,6 +31,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onViewDetails }) 
         <div className="property-price">{formatPrice(property.price)}</div>
         <div className="property-name">{property.name}</div>
         <div className="property-address">{property.address}</div>
+  <div style={{ fontSize: '12px', color: '#666' }}>Code: {property.codeInternal} • Year: {property.year}</div>
         <button 
           className="btn btn-primary" 
           onClick={() => onViewDetails(property)}

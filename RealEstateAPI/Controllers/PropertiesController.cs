@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using RealEstate.Domain.DTOs;
-using RealEstate.Domain.Interfaces;
+using RealEstate.Application.DTOs;
+using RealEstate.Application.Interfaces;
 
 namespace RealEstateAPI.Controllers;
 
@@ -39,9 +39,9 @@ public class PropertiesController : ControllerBase
             var properties = await _propertyService.GetFilteredPropertiesAsync(filter);
             var totalCount = await _propertyService.GetPropertiesCountAsync(filter);
 
-            Response.Headers.Add("X-Total-Count", totalCount.ToString());
-            Response.Headers.Add("X-Page", page.ToString());
-            Response.Headers.Add("X-PageSize", pageSize.ToString());
+            Response.Headers["X-Total-Count"] = totalCount.ToString();
+            Response.Headers["X-Page"] = page.ToString();
+            Response.Headers["X-PageSize"] = pageSize.ToString();
 
             return Ok(properties);
         }
@@ -119,6 +119,34 @@ public class PropertiesController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, new { error = "Internal server error", message = ex.Message });
+        }
+    }
+
+    [HttpGet("status")]
+    public async Task<ActionResult<object>> GetDatabaseStatus()
+    {
+        try
+        {
+            var totalProperties = await _propertyService.GetPropertiesCountAsync(new PropertyFilterDto());
+            var sampleProperties = await _propertyService.GetFilteredPropertiesAsync(new PropertyFilterDto { PageSize = 3 });
+            
+            return Ok(new
+            {
+                status = "OK",
+                totalProperties = totalProperties,
+                sampleProperties = sampleProperties,
+                timestamp = DateTime.UtcNow,
+                message = "Base de datos funcionando correctamente"
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { 
+                status = "ERROR", 
+                error = "Error en la base de datos", 
+                message = ex.Message,
+                timestamp = DateTime.UtcNow
+            });
         }
     }
 }

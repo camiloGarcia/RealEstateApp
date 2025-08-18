@@ -94,6 +94,14 @@ const PropertyModal: React.FC<PropertyModalProps> = ({ property, isOpen, onClose
         <div style={{ marginBottom: '20px' }}>
           <strong>Property ID:</strong> {property.id}
         </div>
+
+        <div style={{ marginBottom: '20px' }}>
+          <strong>Business Code:</strong> {property.codeInternal}
+        </div>
+
+        <div style={{ marginBottom: '20px' }}>
+          <strong>Year:</strong> {property.year}
+        </div>
       </div>
     </div>
   );

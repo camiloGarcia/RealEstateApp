@@ -1,5 +1,6 @@
 using MongoDB.Driver;
-using RealEstate.Domain.DTOs;
+using MongoDB.Bson; // For ObjectId generation
+using RealEstate.Domain.Filters;
 using RealEstate.Domain.Entities;
 using RealEstate.Domain.Interfaces;
 using RealEstate.Infrastructure.Data;
@@ -22,7 +23,7 @@ public class PropertyRepository : IPropertyRepository
         return documents.Select(doc => doc.ToDomain());
     }
 
-    public async Task<IEnumerable<Property>> GetFilteredAsync(PropertyFilterDto filter)
+    public async Task<IEnumerable<Property>> GetFilteredAsync(PropertyFilter filter)
     {
         var filterBuilder = Builders<PropertyDocument>.Filter;
         var filterDefinition = filterBuilder.Empty;
@@ -71,6 +72,20 @@ public class PropertyRepository : IPropertyRepository
 
     public async Task<Property> CreateAsync(Property property)
     {
+        // Ensure a valid Mongo ObjectId (24 hex chars) for the primary key
+        if (string.IsNullOrWhiteSpace(property.Id))
+        {
+            property.Id = ObjectId.GenerateNewId().ToString();
+        }
+        else
+        {
+            // If provided Id is not a valid ObjectId (e.g. Guid), replace it to avoid serialization errors
+            if (!ObjectId.TryParse(property.Id, out _))
+            {
+                property.Id = ObjectId.GenerateNewId().ToString();
+            }
+        }
+
         var document = PropertyDocument.FromDomain(property);
         await _properties.InsertOneAsync(document);
         return document.ToDomain();
@@ -89,7 +104,7 @@ public class PropertyRepository : IPropertyRepository
         return result.IsAcknowledged && result.DeletedCount > 0;
     }
 
-    public async Task<long> GetCountAsync(PropertyFilterDto filter)
+    public async Task<long> GetCountAsync(PropertyFilter filter)
     {
         var filterBuilder = Builders<PropertyDocument>.Filter;
         var filterDefinition = filterBuilder.Empty;

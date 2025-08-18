@@ -1,5 +1,7 @@
-using RealEstate.Domain.DTOs;
+using RealEstate.Application.DTOs;
 using RealEstate.Domain.Entities;
+using RealEstate.Application.Interfaces;
+using RealEstate.Domain.Filters;
 using RealEstate.Domain.Interfaces;
 
 namespace RealEstate.Application.Services;
@@ -21,7 +23,16 @@ public class PropertyService : IPropertyService
 
     public async Task<IEnumerable<PropertyDto>> GetFilteredPropertiesAsync(PropertyFilterDto filter)
     {
-        var properties = await _propertyRepository.GetFilteredAsync(filter);
+        var domainFilter = new PropertyFilter
+        {
+            Name = filter.Name,
+            Address = filter.Address,
+            MinPrice = filter.MinPrice,
+            MaxPrice = filter.MaxPrice,
+            Page = filter.Page,
+            PageSize = filter.PageSize
+        };
+        var properties = await _propertyRepository.GetFilteredAsync(domainFilter);
         return properties.Select(MapToDto);
     }
 
@@ -35,10 +46,14 @@ public class PropertyService : IPropertyService
     {
         var property = new Property
         {
+            // Id will be generated as a Mongo ObjectId in the repository if empty
+            IdProperty = Guid.NewGuid().ToString(),
             IdOwner = createDto.IdOwner,
             Name = createDto.Name,
             Address = createDto.Address,
             Price = createDto.Price,
+            CodeInternal = createDto.CodeInternal,
+            Year = createDto.Year,
             ImageUrl = createDto.ImageUrl,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
@@ -54,11 +69,13 @@ public class PropertyService : IPropertyService
         if (existingProperty == null)
             return null;
 
-        existingProperty.Name = updateDto.Name;
-        existingProperty.Address = updateDto.Address;
-        existingProperty.Price = updateDto.Price;
-        existingProperty.ImageUrl = updateDto.ImageUrl;
-        existingProperty.UpdatedAt = DateTime.UtcNow;
+    existingProperty.Name = updateDto.Name;
+    existingProperty.Address = updateDto.Address;
+    existingProperty.Price = updateDto.Price;
+    existingProperty.CodeInternal = updateDto.CodeInternal;
+    existingProperty.Year = updateDto.Year;
+    existingProperty.ImageUrl = updateDto.ImageUrl;
+    existingProperty.UpdatedAt = DateTime.UtcNow;
 
         var updatedProperty = await _propertyRepository.UpdateAsync(id, existingProperty);
         return updatedProperty != null ? MapToDto(updatedProperty) : null;
@@ -71,7 +88,16 @@ public class PropertyService : IPropertyService
 
     public async Task<long> GetPropertiesCountAsync(PropertyFilterDto filter)
     {
-        return await _propertyRepository.GetCountAsync(filter);
+        var domainFilter = new PropertyFilter
+        {
+            Name = filter.Name,
+            Address = filter.Address,
+            MinPrice = filter.MinPrice,
+            MaxPrice = filter.MaxPrice,
+            Page = filter.Page,
+            PageSize = filter.PageSize
+        };
+        return await _propertyRepository.GetCountAsync(domainFilter);
     }
 
     private static PropertyDto MapToDto(Property property)
@@ -79,10 +105,13 @@ public class PropertyService : IPropertyService
         return new PropertyDto
         {
             Id = property.Id,
+            IdProperty = property.IdProperty,
             IdOwner = property.IdOwner,
             Name = property.Name,
             Address = property.Address,
             Price = property.Price,
+            CodeInternal = property.CodeInternal,
+            Year = property.Year,
             ImageUrl = property.ImageUrl
         };
     }

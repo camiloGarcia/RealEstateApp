@@ -1,7 +1,8 @@
-namespace RealEstate.Domain.DTOs;
+namespace RealEstate.Application.DTOs;
 
 public class PropertyDto
 {
+    public string Id { get; set; } = string.Empty;
     public string IdProperty { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
@@ -9,6 +10,7 @@ public class PropertyDto
     public string CodeInternal { get; set; } = string.Empty;
     public int Year { get; set; }
     public string IdOwner { get; set; } = string.Empty;
+    public string ImageUrl { get; set; } = string.Empty;
 }
 
 public class CreatePropertyDto
@@ -19,6 +21,7 @@ public class CreatePropertyDto
     public decimal Price { get; set; }
     public string CodeInternal { get; set; } = string.Empty;
     public int Year { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
 }
 
 public class UpdatePropertyDto
@@ -28,4 +31,5 @@ public class UpdatePropertyDto
     public decimal Price { get; set; }
     public string CodeInternal { get; set; } = string.Empty;
     public int Year { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
 }

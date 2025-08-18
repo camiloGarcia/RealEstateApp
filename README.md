@@ -53,8 +53,8 @@ npm start
 ```
 RealEstateApp/
 ├── RealEstateAPI/          # API .NET
-├── RealEstate.Domain/      # Entidades y DTOs
-├── RealEstate.Application/ # Servicios de aplicación
+├── RealEstate.Domain/      # Entidades, interfaces repositorio, filtros
+├── RealEstate.Application/ # DTOs y servicios de aplicación
 ├── RealEstate.Infrastructure/ # Repositorios y MongoDB
 ├── real-estate-frontend/   # Aplicación React
 └── start-app.ps1          # Script de inicio automático
@@ -76,6 +76,7 @@ RealEstateApp/
 - ✅ Arquitectura limpia
 - ✅ Base de datos MongoDB
 - ✅ Frontend responsivo
+ - ✅ Manejo global de excepciones
 
 ## 🧪 Testing
 

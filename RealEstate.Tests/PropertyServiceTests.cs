@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Moq;
 using RealEstate.Application.Services;
-using RealEstate.Domain.DTOs;
+using RealEstate.Application.DTOs;
 using RealEstate.Domain.Entities;
 using RealEstate.Domain.Interfaces;
 using System.Collections.Generic;
@@ -31,6 +31,7 @@ public class PropertyServiceTests
             new Property
             {
                 Id = "1",
+                IdProperty = "p1",
                 IdOwner = "owner1",
                 Name = "Test Property 1",
                 Address = "123 Test St",
@@ -40,6 +41,7 @@ public class PropertyServiceTests
             new Property
             {
                 Id = "2",
+                IdProperty = "p2",
                 IdOwner = "owner2",
                 Name = "Test Property 2",
                 Address = "456 Test Ave",
@@ -56,7 +58,7 @@ public class PropertyServiceTests
         // Assert
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Count(), Is.EqualTo(2));
-        Assert.That(result.First().Id, Is.EqualTo("1"));
+    Assert.That(result.First().Id, Is.EqualTo("1"));
         Assert.That(result.First().Name, Is.EqualTo("Test Property 1"));
         Assert.That(result.First().Price, Is.EqualTo(250000));
     }
@@ -68,6 +70,7 @@ public class PropertyServiceTests
         var property = new Property
         {
             Id = "1",
+            IdProperty = "p1",
             IdOwner = "owner1",
             Name = "Test Property",
             Address = "123 Test St",
@@ -109,16 +112,21 @@ public class PropertyServiceTests
             Name = "New Property",
             Address = "789 New St",
             Price = 400000,
+            CodeInternal = "C-001",
+            Year = 2024,
             ImageUrl = "new.jpg"
         };
 
         var createdProperty = new Property
         {
             Id = "new-id",
+            IdProperty = "np1",
             IdOwner = "owner1",
             Name = "New Property",
             Address = "789 New St",
             Price = 400000,
+            CodeInternal = "C-001",
+            Year = 2024,
             ImageUrl = "new.jpg"
         };
 
@@ -143,26 +151,34 @@ public class PropertyServiceTests
             Name = "Updated Property",
             Address = "Updated Address",
             Price = 500000,
+            CodeInternal = "C-002",
+            Year = 2025,
             ImageUrl = "updated.jpg"
         };
 
         var existingProperty = new Property
         {
             Id = "1",
+            IdProperty = "p1",
             IdOwner = "owner1",
             Name = "Old Name",
             Address = "Old Address",
             Price = 250000,
+            CodeInternal = "C-001",
+            Year = 2024,
             ImageUrl = "old.jpg"
         };
 
         var updatedProperty = new Property
         {
             Id = "1",
+            IdProperty = "p1",
             IdOwner = "owner1",
             Name = "Updated Property",
             Address = "Updated Address",
             Price = 500000,
+            CodeInternal = "C-002",
+            Year = 2025,
             ImageUrl = "updated.jpg"
         };
 
@@ -187,6 +203,8 @@ public class PropertyServiceTests
             Name = "Updated Property",
             Address = "Updated Address",
             Price = 500000,
+            CodeInternal = "C-002",
+            Year = 2025,
             ImageUrl = "updated.jpg"
         };
 
