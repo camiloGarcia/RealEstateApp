@@ -1,9 +1,25 @@
 ## RealEstate API
 
+### Requisitos previos
+- .NET 9
+- MongoDB (local o remoto)
+
+### Configuración de la base de datos
+Solo debes agregar la cadena de conexión de MongoDB en el archivo `appsettings.json` del proyecto API, por ejemplo:
+
+```json
+"MongoDbSettings": {
+  "ConnectionString": "mongodb://localhost:27017",
+  "DatabaseName": "RealEstateDb"
+}
+```
+
+Al iniciar la API, la base de datos y las colecciones se crearán automáticamente si no existen. Además, se inicializarán datos de ejemplo y los índices necesarios.
+
 ### Base URL
 `http://localhost:5010/api`
 
-### Endpoints
+### Endpoints principales
 
 #### GET /properties
 Lista paginada y filtrada.
@@ -75,3 +91,4 @@ Formato genérico (middleware global):
 ### Notas
 - API usa camelCase.
 - Filtros aplican regex case-insensitive en `name` y `address` y comparación numérica en `price`.
+- La base de datos se inicializa automáticamente al iniciar la API si la cadena de conexión está configurada correctamente.
