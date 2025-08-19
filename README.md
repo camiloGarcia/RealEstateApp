@@ -23,9 +23,7 @@
      - `RealEstateAPI`: Inicio
      - `real-estate-frontend`: Inicio
      - Los demás proyectos: Ninguno
-   - Debe quedar como se muestra en la siguiente imagen:
-
-     ![Configuración de proyectos de inicio](docs/startup-config.png)
+   - La configuración debe quedar con RealEstateAPI y real-estate-frontend como proyectos de inicio, y los demás en "Ninguno".
 
 3. **Inicia el backend y frontend:**
    - Haz clic en **Iniciar** para ejecutar ambos proyectos.
