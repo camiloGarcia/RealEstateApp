@@ -3,6 +3,8 @@
 ### Requisitos previos
 - .NET 9
 - MongoDB (local o remoto)
+- Visual Studio Community 2022 (preferido)
+- Node.js y npm (para el frontend)
 
 ### Configuración de la base de datos
 Solo debes agregar la cadena de conexión de MongoDB en el archivo `appsettings.json` del proyecto API, por ejemplo:
@@ -15,6 +17,28 @@ Solo debes agregar la cadena de conexión de MongoDB en el archivo `appsettings.
 ```
 
 Al iniciar la API, la base de datos y las colecciones se crearán automáticamente si no existen. Además, se inicializarán datos de ejemplo y los índices necesarios.
+
+### Ejecución de toda la aplicación
+
+1. **Configura la cadena de conexión de MongoDB** en el archivo `appsettings.json` del proyecto API:
+   ```json
+   "MongoDbSettings": {
+     "ConnectionString": "mongodb://localhost:27017",
+     "DatabaseName": "RealEstateDb"
+   }
+   ```
+2. **Inicia el backend:**
+   - Abre la solución con **Visual Studio Community 2022**.
+   - Haz clic en **Iniciar** para ejecutar la API.
+   - La base de datos se inicializa automáticamente al iniciar la API si la cadena de conexión está configurada correctamente.
+3. **Inicia el frontend:**
+   - Ve al directorio `real-estate-frontend`.
+   - Ejecuta:
+     ```bash
+     npm install
+     npm start
+     ```
+   - El frontend estará disponible en `http://localhost:3000` y consumirá la API en `http://localhost:5010/api`.
 
 ### Base URL
 `http://localhost:5010/api`
